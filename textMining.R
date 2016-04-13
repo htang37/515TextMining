@@ -1,5 +1,5 @@
 setwd("~/Desktop/wellsFargo/")
-wf <- read.table("wellsfargocase.txt", head=T, sep="|",stringsAsFactors=FALSE, fileEncoding="latin1")
+wf <- read.table("wellsfargocase.txt", head=T, sep="|",stringsAsFactors=FALSE, fileEncoding="latin1", comment.char="")
 
 ## load the comments
 comment <- wf[,6]
@@ -36,7 +36,7 @@ corp <- tm_map(corp, PlainTextDocument)
 
 
 inspect(corp[1:50])
-wf[25,6]
+
 
 
 
