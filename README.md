@@ -84,6 +84,12 @@ Then we generated the top-related documents in topic 11. This time, “bankbhelp
 
 
 We used this way to check all 20 topics and here is our summary:
+
+First Header | Second Header
+------------ | -------------
+Content from cell 1 | Content from cell 2
+Content in the first column | Content in the second column
+
 Topic | Content | Topic | Content | Topic | Content | Topic | Content 
 - | ----------- | - | ------------ | - | ---------- | - | --------
 1|BankC news |6|Mission Main Street Grants|11|@BankBhelp|16|Security News
