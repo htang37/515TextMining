@@ -84,12 +84,13 @@ Then we generated the top-related documents in topic 11. This time, “bankbhelp
 
 
 We used this way to check all 20 topics and here is our summary:
-
+Topic | Content | Topic | Content | Topic | Content | Topic | Content 
+- | ----------- | - | ------------ | - | ---------- | - | --------
 1|BankC news |6|Mission Main Street Grants|11|@BankBhelp|16|Security News
-2|Job opportunities|7|Hard to tell…|12|Shit, Hate, Fuck..|17	|	Loan & Mortagage
+2|Job opportunities|7|Hard to tell…|12|Shit, Hate, Fuck..|17|Loan & Mortagage
 3|LIBOR scandal|8|Photos|13|Thank, Love…|18|Stock Market News
 4|Poor Customer Service|9|Twitter handles|14|Sport Games |19|getcollegeready
-5|Banks Feedback|10|Hard to tell…|15|Asset Mgmt|20	|	Hard to tell…
+5|Banks Feedback|10|Hard to tell…|15|Asset Mgmt|20|Hard to tell…
 There are three topics which are hard to tell their contents apart from others. Other topics seem to perform well to collect similar documents and we can assign the content summary to each of them.
  
 ##Step 4: Topic Sentiment Analysis 
