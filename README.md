@@ -186,15 +186,14 @@ sentmean[i,1] <- mean(sentscore, na.rm=T)
 We can see that our topic model actually did a good job to sort out the most positive comments. In topic 13, the most frequent words appeared are “thank”, “love” and “bless”. That is why it has the highest sentiment score. While in topic 12, a lot of “hate”, “shit”, and “fuck” appeared in the documents, making the sentiment score really low. This indicates that our topic model really made sense when trying to separate users’ comments based on their sentiment. 
 
 #Managerial Implications 
-*	Attract Millennials
+1. Attract Millennials
 Millennials, as the main users of social media, are a demographic that’s rapidly maturing in terms of their economic strength, social influence and political power. However, according to the FICO report, traditional banks are not so attractive to Millennials when compared to non-traditional payments and peer-to-peer lenders. Meanwhile, 43% of Millennials don’t think that their bank communicates to them through their preferred communication channels, like social media and apps [6].  
-
 As a matter of fact, financial agencies should pay more attention to attract their interest. According to our topic model, Topic 19 is the collection of the documents with the hashtag #getcollegeready of Wells Fargo (BankA). This topic ranked 7th in the overall topic proportions, meaning this topic has relatively large influence on the social. Wells Fargo uses this hashtag to promote its private student loan and it indeed builds the close relationship between students and the agency on social network [7]. 
 
-*	Pay attention to customer feedbacks 
+2. Pay attention to customer feedbacks 
 In our model, Topic 11 is a collection of documents that contains @BankBhelp (real account @BofA_Help), which is official BofA Twitter reps. Topic 11 ranked 2nd in proportions, meaning that this help account actually did a good job in communication with customers and solve their problems. Indeed, @BofA_Help account has the largest influence in the four banks. It has posted 555k Twitters, following 65.6k people and having 95.2k followers [8]. 
 
-*	Quicker and more efficient replies to customer needs 
+3. Quicker and more efficient replies to customer needs 
 Topic 5 is all about banks’ replies to customer feedbacks. After checking the replies, we found that banks usually can’t solve customers’ problems immediately, instead, they told customers to make phone calls to banks or visit local bank stores. Although this kind of communication is great to build a connection with customers, it is not efficient enough to best solve their problems. 
 
 #Summary
