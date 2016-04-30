@@ -51,6 +51,7 @@ In the “stm” package, there is a function “textProcessor” that can build
 	processed <- textProcessor(wf_banks$FullText, metadata=wf_banks)
 
 Last but not least, we only keep the words that appeared more than 15 times in the whole file to do the topic model, to make our model more efficient. We used the code: (removed 86858 of 93077 terms)
+
 	out<-prepDocuments(processed$documents, processed$vocab, processed$meta, lower.thresh=15)
 
 So far, we finished our pre-processing.
@@ -69,6 +70,7 @@ This package also provides many other features, including topic exploration, ext
 We used the following code to build our STM model:
 
 	PrevFit <- stm(out$documents, vocabs, K = 20,  prevalence =~ MediaType, max.em.its = 75, data = meta, init.type = "Spectral")
+	
 The model is set to run for a maximum of 75 EM iterations. We used the MediaType (Facebook/Twitter) as a covariate in the topic prevalence. And we used the spectral initialization, which guarantees the same result to generate regardless of the seed we chose. The graph of 20 topics is generated with the code: (longer lines, larger proportion)
 
 	plot.STM(PrevFit, type="summary")
@@ -111,13 +113,13 @@ As to better understand our generated projects, we applied a sentiment analysis 
 	sentmean <- data.frame(rep(0,20))
 	for (i in 1:20){
 	thought <- findThoughts(PrevFit, text=out$meta$FullText, topics=i, n=200)$docs[[1]]
-       		corpus <- Corpus(VectorSource(thought))
-       		sentscore <- rep(0,200)
-       		for (j in 1:200){
-               		text <- corpus[[j]]$content
-              		 sentiment <- polarity(text)
-               		sentscore[j] <- sentiment$all$polarity
-       		}
+		corpus <- Corpus(VectorSource(thought))
+		sentscore <- rep(0,200)
+		for (j in 1:200){
+			text <- corpus[[j]]$content
+			sentiment <- polarity(text)
+			sentscore[j] <- sentiment$all$polarity
+		}
 		sentmean[i,1] <- mean(sentscore, na.rm=T)
 	}
 
