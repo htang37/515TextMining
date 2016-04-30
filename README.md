@@ -4,11 +4,11 @@ This project is a competition from MindSumo sponsored by Wells Fargo. The projec
 #Background 
 Social media has the proven power for business to develop a loyal community and reach new audience in a marketing strategy. As for finance industry, social media monitoring is also effectively used to improve customer service, generate lead, react to a crisis, track brand awareness and create social media buzz [1]. Wells Fargo alone, has seven official Twitter accounts, including @WellsFargo, @Ask_WellsFargo for answering customer questions, @WellsFargoJobs for job opportunity, @WellsFargoB2B for wholesale customers, @WellsFargoNews for latest company news, @WellsFargoWorks for small business customers and @WFAssetMgmt for market insights [2]. Wells Fargo also has a Facebook page providing updates, financial tips and other information [3]. Wells Fargo and other banking agencies can understand their customers and competitors better by analyzing the first-hand feedbacks from the social media.
 
-#Problem Description 
+##Problem Description 
 Wells Fargo hosted the competition as a campus analytics challenge on MindSumo. As a part of the challenge, Wells Fargo wants to know what financial topics do customers discuss on social media and what caused the consumers to post about the topic. To be specific, if a customer posted “I will never bank again with BankA. Today, I simply wanted to close the savings account at the Bank Location on Address. Personal banker Name gave me such a hard time. Because of this, I will never bank at BankA and will tell everyone I know of the poor customer service”, we should try to build a model to automatically analyze these lines and then cluster the similar comments into a topic telling these comments are complaints of the poor customer service [4]. 
 
 
-#Data
+##Data
 The original dataset is a text file with 220,377 records, each has six metrics: AutoID, Date, Year, Month, MediaType and FullText. It contains Twitter data in August of 2015 and Facebook data from 2014 August to 2015 August with query of 4 banks. The real name of the 4 banks have been replaced by “BankA”, “BankB”, “BankC” and “BankD”. While other banks are replaced by “Banke”. Meanwhile, all scrubbed addresses are replaced by uppercase “ADDRESS”, but a lowercase “address” is part of the text and is not a scrubbed replacement. Similarly, all internet references are replaced by “INTERNET”, a lower case of “internet” is just part of the text. 
 All names are replaced by “Name”, phone numbers as “PHONE”. All actual twitter handles “@” are replaced by “twit_hndl”, so “twit_hndl_BankA” should actually be “@BankA”.
  
@@ -21,7 +21,7 @@ It seems there is no standard answer for the topic assignment, but we can still 
 
 This is process structure of the project. Let’s check each step one by one. 
 
-#Step 1: Pre-processing
+##Step 1: Pre-processing
 In the previous part, we have mentioned that there are many meaningless words in the text, like “ADDRESS”, “Name”, “INTERNET”, “PHONE” and “twit_hndl” (case sensitive), so we first removed them with the code: 
 
 	wf_banks$FullText <- gsub("ADDRESS", " ", wf_banks$FullText, ignore.case=F)
@@ -56,7 +56,7 @@ Last but not least, we only keep the words that appeared more than 15 times in t
 
 So far, we finished our pre-processing.
 
-#Step 2: Topic model with STM package
+##Step 2: Topic model with STM package
 Structural Topic Model stm R package is developed by Robert, Stewart, Tingley. The Structural Topic Model allows researchers to flexibly estimate a topic model that includes document-level meta-data. The meta-data comes from a data generating process for each document and then use the data to find the most likely values for the parameters within the model. The generative process for each document can be summarized as: 
 
 First, for each topic in each document (record), it generalizes a linear model based on document covariates;
@@ -76,7 +76,7 @@ The model is set to run for a maximum of 75 EM iterations. We used the MediaType
 	plot.STM(PrevFit, type="summary")
 
 We will talk about the analysis and interpretation of the model in the next two steps. 
-#Step 3: Topic Interpretations
+##Step 3: Topic Interpretations
 As we mentioned before, we don't have a standard answer to the topic selection. But we can check each topic to see whether the documents in it is highly related to each other. We first checked the topic 4, since it has the largest proportion among 20 topics. We can see that “waiting line”, “wait”, and “waiting” appeared frequently in the documents, so we can assume this topic is about the poor customer service. 
 
 
@@ -106,7 +106,7 @@ We used this way to check all 20 topics and here is our summary:
 20	Hard to tell…
 There are three topics which are hard to tell their contents apart from others. Other topics seem to perform well to collect similar documents and we can assign the content summary to each of them.
  
-#Step 4: Topic Sentiment Analysis 
+##Step 4: Topic Sentiment Analysis 
 As to better understand our generated projects, we applied a sentiment analysis with qdap package, Here is the code we used:
 
  	sentscore <- rep(0,200)
