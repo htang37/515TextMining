@@ -23,32 +23,35 @@ This is process structure of the project. Let’s check each step one by one.
 
 #Step 1: Pre-processing
 In the previous part, we have mentioned that there are many meaningless words in the text, like “ADDRESS”, “Name”, “INTERNET”, “PHONE” and “twit_hndl” (case sensitive), so we first removed them with the code: 
-	*wf_banks$FullText <- gsub("ADDRESS", " ", wf_banks$FullText, ignore.case=F)*
-	*wf_banks$FullText <- gsub("Name", " ", wf_banks$FullText, ignore.case=F)*
-	*wf_banks$FullText <- gsub("INTERNET", " ", wf_banks$FullText, ignore.case=F)*
-	*wf_banks$FullText <- gsub("PHONE", " ", wf_banks$FullText, ignore.case=F)*
-	*wf_banks$FullText <- gsub("twit_hndl_", " ", wf_banks$FullText, ignore.case=F)*
+
+	wf_banks$FullText <- gsub("ADDRESS", " ", wf_banks$FullText, ignore.case=F)
+	wf_banks$FullText <- gsub("Name", " ", wf_banks$FullText, ignore.case=F)
+	wf_banks$FullText <- gsub("INTERNET", " ", wf_banks$FullText, ignore.case=F)
+	wf_banks$FullText <- gsub("PHONE", " ", wf_banks$FullText, ignore.case=F)
+	wf_banks$FullText <- gsub("twit_hndl_", " ", wf_banks$FullText, ignore.case=F)
 
 Next, we want to remove the retweet entities (RT), mentions (@account), punctuation, digits, links (URLs), white spaces. We also want to lowercase all the text and remove the stop words. We used the code below: 
 
-	*wf_banks$FullText = gsub("(RT|via)((?:\\b\\W*@\\w+)+)", "", wf_banks$FullText)*
-	*wf_banks$FullText = gsub("@\\w+", "", wf_banks$FullText)*
-	*wf_banks$FullText = gsub("[[:punct:]]", "", wf_banks$FullText)*
-	*wf_banks$FullText = gsub("[[:digit:]]", "", wf_banks$FullText)*
-	*wf_banks$FullText = gsub("http\\w+", "", wf_banks$FullText)*
-	*wf_banks$FullText <- gsub("^[[:space:]]+", "", wf_banks$FullText)* 
-	*wf_banks$FullText <- gsub("[[:space:]]+$", "", wf_banks$FullText)* 
-	*wf_banks$FullText = tolower(wf_banks$FullText)*
-	*wf_banks$FullText <- removeWords(wf_banks$FullText, stopwords("english"))* 
+	wf_banks$FullText = gsub("(RT|via)((?:\\b\\W*@\\w+)+)", "", wf_banks$FullText)
+	wf_banks$FullText = gsub("@\\w+", "", wf_banks$FullText)
+	wf_banks$FullText = gsub("[[:punct:]]", "", wf_banks$FullText)
+	wf_banks$FullText = gsub("[[:digit:]]", "", wf_banks$FullText)
+	wf_banks$FullText = gsub("http\\w+", "", wf_banks$FullText)
+	wf_banks$FullText <- gsub("^[[:space:]]+", "", wf_banks$FullText) 
+	wf_banks$FullText <- gsub("[[:space:]]+$", "", wf_banks$FullText)
+	wf_banks$FullText = tolower(wf_banks$FullText)
+	wf_banks$FullText <- removeWords(wf_banks$FullText, stopwords("english"))
 
 Also, we only want to keep the text with the four banks, since other banks’ performance are not considered in this project. We used the code: (deleted 28197 records)
-	*wf_banks <- filter(wf, grepl('BankA|BankB|BankC|BankD', wf$FullText))*
+
+	wf_banks <- filter(wf, grepl('BankA|BankB|BankC|BankD', wf$FullText))
 
 In the “stm” package, there is a function “textProcessor” that can build corpus, convert to lower case, remove stopwords, remove numbers, remove punctuation, and stem words automatically. The code is:
-	*processed <- textProcessor(wf_banks$FullText, metadata=wf_banks)*
+
+	processed <- textProcessor(wf_banks$FullText, metadata=wf_banks)
 
 Last but not least, we only keep the words that appeared more than 15 times in the whole file to do the topic model, to make our model more efficient. We used the code: (removed 86858 of 93077 terms)
-	*out<-prepDocuments(processed$documents, processed$vocab, processed$meta, lower.thresh=15)*
+	out<-prepDocuments(processed$documents, processed$vocab, processed$meta, lower.thresh=15)
 
 So far, we finished our pre-processing.
 
@@ -64,9 +67,11 @@ In the end, for each document, STM assigns it to a specific topic. Therefore, fo
 This package also provides many other features, including topic exploration, extensive plotting and visualization options [5].  
 
 We used the following code to build our STM model:
-	*PrevFit <- stm(out$documents, vocabs, K = 20,  prevalence =~ MediaType, max.em.its = 75, data = meta, init.type = "Spectral")*
+
+	PrevFit <- stm(out$documents, vocabs, K = 20,  prevalence =~ MediaType, max.em.its = 75, data = meta, init.type = "Spectral")
 The model is set to run for a maximum of 75 EM iterations. We used the MediaType (Facebook/Twitter) as a covariate in the topic prevalence. And we used the spectral initialization, which guarantees the same result to generate regardless of the seed we chose. The graph of 20 topics is generated with the code: (longer lines, larger proportion)
-plot.STM(PrevFit, type="summary")
+
+	plot.STM(PrevFit, type="summary")
 
 We will talk about the analysis and interpretation of the model in the next two steps. 
 #Step 3: Topic Interpretations
@@ -101,7 +106,8 @@ There are three topics which are hard to tell their contents apart from others. 
  
 #Step 4: Topic Sentiment Analysis 
 As to better understand our generated projects, we applied a sentiment analysis with qdap package, Here is the code we used:
- *	sentscore <- rep(0,200)
+
+ 	sentscore <- rep(0,200)
 	sentmean <- data.frame(rep(0,20))
 	for (i in 1:20){
 	thought <- findThoughts(PrevFit, text=out$meta$FullText, topics=i, n=200)$docs[[1]]
@@ -113,7 +119,7 @@ As to better understand our generated projects, we applied a sentiment analysis 
                		sentscore[j] <- sentiment$all$polarity
        		}
 		sentmean[i,1] <- mean(sentscore, na.rm=T)
-	}*
+	}
 
 1	0.1341 
 6	0.0273
