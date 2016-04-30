@@ -84,6 +84,7 @@ Then we generated the top-related documents in topic 11. This time, “bankbhelp
 
 
 We used this way to check all 20 topics and here is our summary:
+
 1|BankC news |6|Mission Main Street Grants|11|@BankBhelp|16|Security News
 2|Job opportunities|7|Hard to tell…|12|Shit, Hate, Fuck..|17	|	Loan & Mortagage
 3|LIBOR scandal|8|Photos|13|Thank, Love…|18|Stock Market News
