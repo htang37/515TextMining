@@ -84,26 +84,11 @@ Then we generated the top-related documents in topic 11. This time, “bankbhelp
 
 
 We used this way to check all 20 topics and here is our summary:
-1	BankC news 
-6	Mission Main Street Grants
-11	@BankBhelp
-16	Security News
-2	Job opportunities
-7	Hard to tell…
-12	Shit, Hate, Fuck..
-17	Loan & Mortagage
-3	LIBOR news
-8	Photos
-13	Thank, Love…
-18	Stock Market News
-4	Poor Customer Service
-9	Twitter handles
-14	Sport Games 
-19	getcollegeready
-5	Banks Feedback
-10	Hard to tell…
-15	Asset Mgmt
-20	Hard to tell…
+1|BankC news |6|Mission Main Street Grants|11|@BankBhelp|16|Security News
+2|Job opportunities|7|Hard to tell…|12|Shit, Hate, Fuck..|17	|	Loan & Mortagage
+3|LIBOR scandal|8|Photos|13|Thank, Love…|18|Stock Market News
+4|Poor Customer Service|9|Twitter handles|14|Sport Games |19|getcollegeready
+5|Banks Feedback|10|Hard to tell…|15|Asset Mgmt|20	|	Hard to tell…
 There are three topics which are hard to tell their contents apart from others. Other topics seem to perform well to collect similar documents and we can assign the content summary to each of them.
  
 ##Step 4: Topic Sentiment Analysis 
@@ -123,26 +108,26 @@ As to better understand our generated projects, we applied a sentiment analysis 
 		sentmean[i,1] <- mean(sentscore, na.rm=T)
 	}
 
-1	0.1341 
-6	0.0273
-11	-0.1077
-16	-0.3388
-2	-0.1598
-7	-0.2953
-12	-0.3378
-17	-0.0048
-3	-0.0172
-8	0.0304
-13	0.8086
-18	-0.1217
-4	0.0787
-9	0.0737
-14	0.0794
-19	0.2157
-5	0.0618
-10	0.0072
-15	-0.1016
-20	-0.0404
+1	|	0.1341 
+6	|	0.0273
+11	|	-0.1077
+16	|	-0.3388
+2	|	-0.1598
+7	|	-0.2953
+12	|	-0.3378
+17	|	-0.0048
+3	|	-0.0172
+8	|	0.0304
+13	|	0.8086
+18	|	-0.1217
+4	|	0.0787
+9	|	0.0737
+14	|	0.0794
+19	|	0.2157
+5	|	0.0618
+10	|	0.0072
+15	|	-0.1016
+20	|	-0.0404
 
 We can see that our topic model actually did a good job to sort out the most positive comments. In topic 13, the most frequent words appeared are “thank”, “love” and “bless”. That is why it has the highest sentiment score. While in topic 12, a lot of “hate”, “shit”, and “fuck” appeared in the documents, making the sentiment score really low. This indicates that our topic model really made sense when trying to separate users’ comments based on their sentiment. 
 
