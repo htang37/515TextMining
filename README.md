@@ -112,26 +112,13 @@ As to better understand our generated projects, we applied a sentiment analysis 
 		sentmean[i,1] <- mean(sentscore, na.rm=T)
 	}
 
-1	|	0.1341 
-6	|	0.0273
-11	|	-0.1077
-16	|	-0.3388
-2	|	-0.1598
-7	|	-0.2953
-12	|	-0.3378
-17	|	-0.0048
-3	|	-0.0172
-8	|	0.0304
-13	|	0.8086
-18	|	-0.1217
-4	|	0.0787
-9	|	0.0737
-14	|	0.0794
-19	|	0.2157
-5	|	0.0618
-10	|	0.0072
-15	|	-0.1016
-20	|	-0.0404
+Topic | Score | Topic | Score | Topic | Score | Topic | Score
+----- | --------| ----- | --------| ----- | --------| ----- | --------|
+1	|	0.1341 | 6	|	0.0273 | 11	|	-0.1077 | 16	|	-0.3388
+2	|	-0.1598 | 7	|	-0.2953 | 12	|	-0.3378 | 17	|	-0.0048
+3	|	-0.0172 | 8	|	0.0304 | 13	|	0.8086 | 18	|	-0.1217
+4	|	0.0787 | 9	|	0.0737 | 14	|	0.0794 | 19	|	0.2157
+5	|	0.0618 | 10	|	0.0072 | 15	|	-0.1016 | 20	|	-0.0404
 
 We can see that our topic model actually did a good job to sort out the most positive comments. In topic 13, the most frequent words appeared are “thank”, “love” and “bless”. That is why it has the highest sentiment score. While in topic 12, a lot of “hate”, “shit”, and “fuck” appeared in the documents, making the sentiment score really low. This indicates that our topic model really made sense when trying to separate users’ comments based on their sentiment. 
 
