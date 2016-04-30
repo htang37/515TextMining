@@ -1,19 +1,18 @@
-Executive Summary
+#Executive Summary
 This project is a competition from MindSumo sponsored by Wells Fargo. The project aims to find the insight that indicates customers’ behaviors, desires, pains and thought from financial comments and conversations on social media. To realize the text mining of the social media data, we applied topic modeling algorithm with R and in the end got 20 different topics with around 200k twitters and Facebook comments. We also used sentiment analysis to compare different topics to see whether they are good indicators of these customers’ comments. In the end of the report, we suggested some recommendations for the financial agencies to better utilize social media to improve customers’ experience and loyalty. 
 
-Introduction 
-Background 
+#Background 
 Social media has the proven power for business to develop a loyal community and reach new audience in a marketing strategy. As for finance industry, social media monitoring is also effectively used to improve customer service, generate lead, react to a crisis, track brand awareness and create social media buzz [1]. Wells Fargo alone, has seven official Twitter accounts, including @WellsFargo, @Ask_WellsFargo for answering customer questions, @WellsFargoJobs for job opportunity, @WellsFargoB2B for wholesale customers, @WellsFargoNews for latest company news, @WellsFargoWorks for small business customers and @WFAssetMgmt for market insights [2]. Wells Fargo also has a Facebook page providing updates, financial tips and other information [3]. Wells Fargo and other banking agencies can understand their customers and competitors better by analyzing the first-hand feedbacks from the social media.
 
-Problem Description 
+#Problem Description 
 Wells Fargo hosted the competition as a campus analytics challenge on MindSumo. As a part of the challenge, Wells Fargo wants to know what financial topics do customers discuss on social media and what caused the consumers to post about the topic. To be specific, if a customer posted “I will never bank again with BankA. Today, I simply wanted to close the savings account at the Bank Location on Address. Personal banker Name gave me such a hard time. Because of this, I will never bank at BankA and will tell everyone I know of the poor customer service”, we should try to build a model to automatically analyze these lines and then cluster the similar comments into a topic telling these comments are complaints of the poor customer service [4]. 
 
-Data and Methodology
-Data
+
+#Data
 The original dataset is a text file with 220,377 records, each has six metrics: AutoID, Date, Year, Month, MediaType and FullText. It contains Twitter data in August of 2015 and Facebook data from 2014 August to 2015 August with query of 4 banks. The real name of the 4 banks have been replaced by “BankA”, “BankB”, “BankC” and “BankD”. While other banks are replaced by “Banke”. Meanwhile, all scrubbed addresses are replaced by uppercase “ADDRESS”, but a lowercase “address” is part of the text and is not a scrubbed replacement. Similarly, all internet references are replaced by “INTERNET”, a lower case of “internet” is just part of the text. 
 All names are replaced by “Name”, phone numbers as “PHONE”. All actual twitter handles “@” are replaced by “twit_hndl”, so “twit_hndl_BankA” should actually be “@BankA”.
  
-Methodology
+#Methodology
 After checking the data description, we first did a data preprocessing to remove all the meaningless expressions.  After we got our clean file, we applied a topic model algorithm from “stm” package of R to come up with 20 topics from all the comments. 
 
 As a matter of fact, if we hire 100 human experts to analyze 200k comments and classify them in 20 topics, we may get 100 totally different answers. One expert could do the classification based on geographic locations of the comments. Another could do based on the contents, sort out the news from the complaints, or thanks. One of them may classify based on the events of hashtags of the social media, since hashtags are commonly used on Twitters.
@@ -22,7 +21,7 @@ It seems there is no standard answer for the topic assignment, but we can still 
 
 This is process structure of the project. Let’s check each step one by one. 
 
-Step 1: Pre-processing
+#Step 1: Pre-processing
 In the previous part, we have mentioned that there are many meaningless words in the text, like “ADDRESS”, “Name”, “INTERNET”, “PHONE” and “twit_hndl” (case sensitive), so we first removed them with the code: 
 	wf_banks$FullText <- gsub("ADDRESS", " ", wf_banks$FullText, ignore.case=F)
 wf_banks$FullText <- gsub("Name", " ", wf_banks$FullText, ignore.case=F)
@@ -31,22 +30,22 @@ wf_banks$FullText <- gsub("PHONE", " ", wf_banks$FullText, ignore.case=F)
 wf_banks$FullText <- gsub("twit_hndl_", " ", wf_banks$FullText, ignore.case=F)
 
 Next, we want to remove the retweet entities (RT), mentions (@account), punctuation, digits, links (URLs), white spaces. We also want to lowercase all the text and remove the stop words. We used the code below: 
-	# remove retweet entities 
+
 wf_banks$FullText = gsub("(RT|via)((?:\\b\\W*@\\w+)+)", "", wf_banks$FullText)
-# remove "@people"
+
 wf_banks$FullText = gsub("@\\w+", "", wf_banks$FullText)
-# remove punctuation
+
 wf_banks$FullText = gsub("[[:punct:]]", "", wf_banks$FullText)
-# remove digits 
+
 wf_banks$FullText = gsub("[[:digit:]]", "", wf_banks$FullText)
-# remove links
+
 wf_banks$FullText = gsub("http\\w+", "", wf_banks$FullText)
-# remove white spaces
+
 wf_banks$FullText <- gsub("^[[:space:]]+", "", wf_banks$FullText ) 
 wf_banks$FullText <- gsub("[[:space:]]+$", "", wf_banks$FullText ) 
-# lowercase 
+ 
 wf_banks$FullText = tolower(wf_banks$FullText)
-# remove stopwords 
+
 wf_banks$FullText <- removeWords(wf_banks$FullText, stopwords("english")) 
 
 Also, we only want to keep the text with the four banks, since other banks’ performance are not considered in this project. We used the code: (deleted 28197 records)
@@ -60,7 +59,7 @@ out<-prepDocuments(processed$documents, processed$vocab, processed$meta, lower.t
 
 So far, we finished our pre-processing.
 
-Step 2: Topic model with STM package
+#Step 2: Topic model with STM package
 Structural Topic Model stm R package is developed by Robert, Stewart, Tingley. The Structural Topic Model allows researchers to flexibly estimate a topic model that includes document-level meta-data. The meta-data comes from a data generating process for each document and then use the data to find the most likely values for the parameters within the model. The generative process for each document can be summarized as: 
 
 First, for each topic in each document (record), it generalizes a linear model based on document covariates;
@@ -77,7 +76,7 @@ The model is set to run for a maximum of 75 EM iterations. We used the MediaType
 plot.STM(PrevFit, type="summary")
 
 We will talk about the analysis and interpretation of the model in the next two steps. 
-Step 3: Topic Interpretations
+#Step 3: Topic Interpretations
 As we mentioned before, we don't have a standard answer to the topic selection. But we can check each topic to see whether the documents in it is highly related to each other. We first checked the topic 4, since it has the largest proportion among 20 topics. We can see that “waiting line”, “wait”, and “waiting” appeared frequently in the documents, so we can assume this topic is about the poor customer service. 
 
 
@@ -127,7 +126,7 @@ Asset Mgmt
 Hard to tell…
 There are three topics which are hard to tell their contents apart from others. Other topics seem to perform well to collect similar documents and we can assign the content summary to each of them.
  
-Step 4: Topic Sentiment Analysis 
+#Step 4: Topic Sentiment Analysis 
 As to better understand our generated projects, we applied a sentiment analysis with qdap package, Here is the code we used:
 	sentscore <- rep(0,200)
 sentmean <- data.frame(rep(0,20))
@@ -186,7 +185,7 @@ sentmean[i,1] <- mean(sentscore, na.rm=T)
 
 We can see that our topic model actually did a good job to sort out the most positive comments. In topic 13, the most frequent words appeared are “thank”, “love” and “bless”. That is why it has the highest sentiment score. While in topic 12, a lot of “hate”, “shit”, and “fuck” appeared in the documents, making the sentiment score really low. This indicates that our topic model really made sense when trying to separate users’ comments based on their sentiment. 
 
-Managerial Implications 
+#Managerial Implications 
 1.	Attract Millennials
 Millennials, as the main users of social media, are a demographic that’s rapidly maturing in terms of their economic strength, social influence and political power. However, according to the FICO report, traditional banks are not so attractive to Millennials when compared to non-traditional payments and peer-to-peer lenders. Meanwhile, 43% of Millennials don’t think that their bank communicates to them through their preferred communication channels, like social media and apps [6].  
 
@@ -202,7 +201,7 @@ Summary
 This project involves building a text mining topic model STM that can give us 20 trending topics among 220k social media conversations. We checked the most related documents under each topic and figure out the summary to each of it. Meanwhile, we applied a sentiment analysis between different topics to see whether our topic model made sense. In the end, we provided some recommendations for finance agencies to improve customer service with the help of social media. 
 
 
-Reference
+#Reference
 [1] http://oursocialtimes.com/event/socialmediafinance/
 [2] https://twitter.com/search?f=users&q=wells%20fargo
 [3] https://www.facebook.com/wellsfargo/info/?tab=page_info
